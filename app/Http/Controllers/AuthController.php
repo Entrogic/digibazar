@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,7 +81,25 @@ class AuthController extends Controller
         $totalUsers = User::count();
         $totalAdmins = User::admins()->count();
 
-        return view('admin.dashboard', compact('user', 'totalUsers', 'totalAdmins'));
+        // Order statistics
+        $totalOrders = Order::count();
+        $pendingOrders = Order::where('status', 'pending')->count();
+        $completedOrders = Order::where('status', 'delivered')->count();
+        $totalRevenue = Order::where('status', 'delivered')->sum('total_price');
+        $todayOrders = Order::whereDate('created_at', today())->count();
+        $thisMonthOrders = Order::thisMonth()->count();
+
+        return view('admin.dashboard', compact(
+            'user',
+            'totalUsers',
+            'totalAdmins',
+            'totalOrders',
+            'pendingOrders',
+            'completedOrders',
+            'totalRevenue',
+            'todayOrders',
+            'thisMonthOrders'
+        ));
     }
 
     /**

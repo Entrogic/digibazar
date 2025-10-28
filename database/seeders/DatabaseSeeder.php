@@ -17,14 +17,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // Seed admin users
+        // Seed admin users and categories
         $this->call([
-            AdminUserSeeder::class,
+            AdminSeeder::class,
+            CategorySeeder::class,
+            ProductSeeder::class,
         ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
     }
 }

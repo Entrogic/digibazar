@@ -123,4 +123,23 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Currency Configuration
+    |--------------------------------------------------------------------------
+    |
+    | These options control the currency settings for the application.
+    | Currently configured for Bangladesh Taka (BDT).
+    |
+    */
+
+    'currency' => [
+        'code' => 'BDT',
+        'symbol' => '৳',
+        'name' => 'Bangladesh Taka',
+        'decimal_places' => 2,
+        'thousand_separator' => ',',
+        'decimal_separator' => '.',
+    ],
+
 ];
