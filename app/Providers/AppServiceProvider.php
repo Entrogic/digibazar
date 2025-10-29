@@ -24,13 +24,5 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('bdt', function ($expression) {
             return "<?php echo '৳' . number_format($expression, 2); ?>";
         });
-
-        // Register helper function
-        if (!function_exists('format_bdt')) {
-            function format_bdt($amount)
-            {
-                return '৳' . number_format($amount, 2);
-            }
-        }
     }
 }
