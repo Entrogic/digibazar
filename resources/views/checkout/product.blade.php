@@ -42,49 +42,105 @@
                         <div class="md:w-1/2">
                             <img src="{{ $product->main_image }}" alt="{{ $product->name }}"
                                 class="w-full h-64 object-cover rounded-lg border">
+
+
                         </div>
 
                         <!-- Product Info -->
                         <div class="md:w-1/2">
                             <h3 class="text-xl font-semibold text-gray-800 mb-3">{{ $product->name }}</h3>
 
+                            <!-- Attributes -->
+
+
+
                             @if ($product->short_description)
-                                <p class="text-gray-600 mb-4">{{ $product->short_description }}</p>
+                                <p class="text-gray-600 mb-2">{{ $product->short_description }}</p>
                             @endif
 
-                            <!-- Price -->
-                            <div class="mb-4">
-                                <div class="flex items-center space-x-3">
-                                    <span class="text-2xl font-bold text-green-600">{{ $product->formatted_price }}</span>
-                                    @if ($product->compare_price)
-                                        <span
-                                            class="text-lg text-gray-500 line-through">{{ $product->formatted_compare_price }}</span>
-                                    @endif
+
+                            @if ($product->variants->count())
+                                <div class="mb-4 py-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">পছন্দের বৈচিত্র্য</label>
+                                    <select id="variant-select" name="variant_id"
+                                        class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500">
+                                        <option value="">-- পছন্দের বৈচিত্র্য নির্বাচন করুন --</option>
+                                        @foreach ($product->variants as $variant)
+                                            <option value="{{ $variant->id }}" data-price="{{ $variant->price }}"
+                                                data-stock="{{ $variant->stock }}">
+                                                {{ $variant->sku }} -
+                                                @foreach ($variant->values as $v)
+                                                    {{ $v->attributeValue->value }}
+                                                @endforeach
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                @if ($product->discount_percentage > 0)
-                                    <span class="text-sm text-red-600 font-semibold">{{ $product->discount_percentage }}%
-                                        ছাড়!</span>
-                                @endif
+                            @endif
+
+
+
+                            <!-- Price -->
+                            <div id="p-dynamic-info">
+
                             </div>
 
                             <!-- Category -->
-                            @if ($product->category)
+                            {{-- @if ($product->category)
                                 <div class="mb-4">
                                     <span class="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
                                         {{ $product->category->name }}
                                     </span>
                                 </div>
-                            @endif
+                            @endif --}}
 
-                            <!-- Stock Status -->
-                            <div class="mb-4">
-                                <span class="text-sm px-3 py-1 rounded-full {{ $product->stock_status_color }}">
-                                    {{ $product->stock_status }}
-                                </span>
-                                <p class="text-sm text-gray-600 mt-1">স্টকে আছে: {{ $product->stock_quantity }} টি</p>
-                            </div>
+
                         </div>
                     </div>
+
+                    @if ($product->variants->count())
+                        <div class="border-t border-gray-200 pt-6 mt-6">
+                            <h2 class="text-lg font-semibold leading-7 text-gray-900 mb-4">Product Variants</h2>
+
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200 text-sm">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-4 py-2 text-left font-medium text-gray-700">SKU</th>
+                                            @foreach ($attributes as $attribute)
+                                                <th class="px-4 py-2 text-left font-medium text-gray-700">
+                                                    {{ $attribute->name }}</th>
+                                            @endforeach
+                                            <th class="px-4 py-2 text-left font-medium text-gray-700">Price</th>
+                                            <th class="px-4 py-2 text-left font-medium text-gray-700">Stock</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        @foreach ($product->variants as $variant)
+                                            <tr>
+                                                <td class="px-4 py-2">{{ $variant->sku }}</td>
+
+                                                @foreach ($attributes as $attribute)
+                                                    @php
+                                                        $value = $variant->values->firstWhere(
+                                                            'attribute_id',
+                                                            $attribute->id,
+                                                        );
+                                                    @endphp
+                                                    <td class="px-4 py-2">{{ $value?->attributeValue?->value ?? '-' }}</td>
+                                                @endforeach
+
+                                                <td class="px-4 py-2">৳{{ number_format($variant->price, 2) }}</td>
+                                                <td class="px-4 py-2">{{ $variant->stock }}</td>
+
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @endif
+
                 </div>
 
                 <!-- Checkout Form -->
@@ -109,14 +165,14 @@
                         <div>
                             <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">পরিমাণ</label>
                             <div class="flex items-center space-x-3">
-                                <button type="button" onclick="decreaseQuantity()"
+                                <button id="qty-minus" type="button"
                                     class="w-10 h-10 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center text-lg font-semibold">
                                     -
                                 </button>
                                 <input type="number" id="quantity" name="quantity" value="1" min="1"
                                     max="{{ $product->stock_quantity }}"
                                     class="w-20 text-center border border-gray-300 rounded-lg py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                <button type="button" onclick="increaseQuantity({{ $product->stock_quantity }})"
+                                <button id="qty-plus" type="button"
                                     class="w-10 h-10 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center text-lg font-semibold">
                                     +
                                 </button>
@@ -155,7 +211,8 @@
                             </div>
 
                             <div>
-                                <label for="customer_address" class="block text-sm font-medium text-gray-700 mb-1">সম্পূর্ণ
+                                <label for="customer_address"
+                                    class="block text-sm font-medium text-gray-700 mb-1">সম্পূর্ণ
                                     ঠিকানা *</label>
                                 <textarea id="customer_address" name="customer_address" rows="3" required
                                     class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -197,7 +254,7 @@
                         </div>
 
                         <!-- Order Summary -->
-                        <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="bg-gray-50 rounded-lg p-4 hidden" id="order-summary">
                             <h4 class="font-semibold text-gray-700 mb-3">অর্ডার সারাংশ</h4>
                             <div class="space-y-2">
                                 <div class="flex justify-between">
@@ -237,55 +294,86 @@
             </div>
         </div>
     </div>
-
-    <script>
-        const productPrice = {{ $product->price }};
-
-        function updateTotal() {
-            const quantity = parseInt(document.getElementById('quantity').value) || 1;
-            const total = productPrice * quantity;
-
-            document.getElementById('quantity-display').textContent = numberToBengali(quantity);
-            document.getElementById('total-price').textContent = '৳' + numberToBengali(total.toLocaleString());
-        }
-
-        function increaseQuantity(maxStock) {
-            const quantityInput = document.getElementById('quantity');
-            let quantity = parseInt(quantityInput.value) || 1;
-            if (quantity < maxStock) {
-                quantityInput.value = quantity + 1;
-                updateTotal();
-            }
-        }
-
-        function decreaseQuantity() {
-            const quantityInput = document.getElementById('quantity');
-            let quantity = parseInt(quantityInput.value) || 1;
-            if (quantity > 1) {
-                quantityInput.value = quantity - 1;
-                updateTotal();
-            }
-        }
-
-        function numberToBengali(num) {
-            const bengaliNumbers = {
-                '0': '০',
-                '1': '১',
-                '2': '২',
-                '3': '৩',
-                '4': '৪',
-                '5': '৫',
-                '6': '৬',
-                '7': '৭',
-                '8': '৮',
-                '9': '৯'
-            };
-            return num.toString().replace(/[0-9]/g, function(match) {
-                return bengaliNumbers[match];
-            });
-        }
-
-        // Listen for quantity input changes
-        document.getElementById('quantity').addEventListener('input', updateTotal);
-    </script>
 @endsection
+
+@push('scripts')
+    <script>
+        $('#qty-plus').click(function() {
+            let qty = $('#quantity');
+            let newVal = parseInt(qty.val()) + 1;
+            qty.val(newVal);
+        });
+        $('#qty-minus').click(function() {
+            let qty = $('#quantity');
+
+            if (parseInt(qty.val()) > 1) {
+                let newVal = parseInt(qty.val()) - 1;
+                qty.val(newVal);
+            }
+
+        });
+
+
+        $('#variant-select').change(function(e) {
+            e.preventDefault();
+
+            let variantId = $(this).val();
+            let productId = "{{ $product->id }}"
+
+            $.ajax({
+                url: "{{ route('admin.product.get-variants') }}",
+                type: 'GET',
+                data: {
+                    variantId,
+                    productId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 1) {
+                        const data = response.data;
+                        let html = `<div class="mb-4">
+                                        <div class="flex items-center space-x-3">
+                                            <p>Price:</p>
+                                            <span id="p-price" class="text-2xl font-bold text-green-600" data-val="${data.price}">${data.price} BDT</span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <p class="text-sm text-gray-600 mt-1">স্টকে আছে: ${data.stock} টি</p>
+                                    </div>`;
+
+                        $('#p-dynamic-info').html(html);
+                        updateSummary();
+
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+
+
+
+            function updateSummary() {
+
+
+                let qty = $('#quantity').val();
+                let price = $("#p-price").data('val');
+
+                if(price > 0){
+                    $('#unit-price').text(price);
+                    $('#quantity-display').text(qty);
+                    $('#total-price').text(parseFloat(parseInt(qty) * parseInt(price)).toFixed(2));
+
+
+
+                    $('#order-summary').removeClass('hidden');
+                }
+
+
+
+
+            }
+
+        });
+    </script>
+@endpush

@@ -44,6 +44,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('products/{product}/variants/create', [ProductVariantController::class, 'create'])->name('product.variants.create');
     Route::post('products/{product}/variants', [ProductVariantController::class, 'store'])->name('product.variants.store');
 
+    Route::get('/product-variant',[ProductVariantController::class, 'getProductVariants'])->name('product.get-variants');
+
     // Order Management
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'destroy']);
     Route::post('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.update-status');

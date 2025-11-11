@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attribute as ModelsAttribute;
 use App\Models\Order;
 use App\Models\Product;
+use Attribute;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
@@ -21,8 +23,9 @@ class CheckoutController extends Controller
         if (!$product->is_active || $product->stock_quantity <= 0) {
             return redirect()->route('home')->with('error', 'এই পণ্যটি বর্তমানে পাওয়া যাচ্ছে না।');
         }
+        $attributes = ModelsAttribute::all();
 
-        return view('checkout.product', compact('product'));
+        return view('checkout.product', compact('product','attributes'));
     }
 
     public function process(Request $request)

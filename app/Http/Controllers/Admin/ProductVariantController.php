@@ -59,4 +59,17 @@ class ProductVariantController extends Controller
         return redirect()->route('admin.products.edit', $product->id)
             ->with('success', 'All product variants added successfully!');
     }
+
+
+
+    public function getProductVariants(Request $request)
+    {
+        $variant = ProductVariant::where('product_id', $request->productId)->where('id', $request->variantId)->first();
+
+        return response()->json([
+            'status' => 1,
+            'data' => $variant
+
+        ]);
+    }
 }

@@ -8,6 +8,8 @@
         {{ \App\Models\Setting::get('site_tagline', 'ডিজিবাজার') }}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset(\App\Models\Setting::get('favicon', '/favicon.ico')) }}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
 
@@ -101,6 +103,9 @@
 
     <!-- Footer -->
     @include('layouts.partials.footer')
+
+
+    @stack('scripts')
 
 </body>
 
