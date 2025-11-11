@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -20,7 +21,8 @@ class HomeController extends Controller
             ->get();
 
             //dd($featuredProducts);
+        $banners = Banner::orderBy('id','desc')->get();    
 
-        return view('home', compact('categories', 'featuredProducts'));
+        return view('home', compact('categories', 'featuredProducts','banners'));
     }
 }

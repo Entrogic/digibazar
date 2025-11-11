@@ -1,21 +1,93 @@
 @extends('layouts.app')
+@push('style')
+      <style>
+        .slider-item {
+            display: none;
+        }
+        .slider-item.active {
+            display: block;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        .animation-delay-200 {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+        .animation-delay-400 {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+    </style>
+@endpush
 @section('content')
-    <!-- Hero Section -->
-    <section class="hero-bg py-32 text-center text-white">
-        <div class="container mx-auto px-4">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                {{ \App\Models\Setting::get('site_tagline', 'মুদি থেকে উৎস — সবকিছু পৌঁছে যাবে আপনার দরজায়') }}
-            </h1>
-            <p class="text-lg mb-8 text-gray-200">
-                {{ \App\Models\Setting::get('site_description', 'কাজকর্মে ব্যস্ততার মাঝে সময় বাঁচান') }}
-            </p>
-            <button
-                class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-semibold inline-flex items-center space-x-2 transition">
-                <span>এখনই কিনুন</span>
-                <span>→</span>
-            </button>
+    <div id="slider" class="relative w-full overflow-hidden bg-gray-900">
+        <div class="relative h-[500px] md:h-[600px] lg:h-[700px]">
+
+            <!-- Slide 1 -->
+            @forelse($banners as $banner)
+                <div class="slider-item active absolute inset-0" data-slide="{{$banner->id}}">
+                    <div class="absolute inset-0">
+                        <img src="{{asset($banner->image)}}" alt="Slide 1"
+                            class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                    </div>
+                    <div class="relative h-full flex items-center">
+                        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="max-w-3xl">
+                                <h1
+                                    class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 animate-fade-in-up">
+                                    {{$banner->title}}
+                                </h1>
+                                <p
+                                    class="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 animate-fade-in-up animation-delay-200">
+                                           {{$banner->subtitle}}
+                                </p>
+                                <a href="{{$banner->button_link}}"
+                                    class="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 animate-fade-in-up animation-delay-400">
+                                    {{$banner->button_text}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+            @endforelse
+
         </div>
-    </section>
+
+        <!-- Navigation Arrows -->
+        <button id="prevBtn"
+            class="absolute left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-30 hover:bg-opacity-50 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm z-10">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+
+        <button id="nextBtn"
+            class="absolute right-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-30 hover:bg-opacity-50 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm z-10">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+
+        <!-- Dots Navigation -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
+            @foreach ($banners as $banner)
+            <button class="dot w-3 h-3 rounded-full bg-white transition-all  duration-300" data-slide="{{ $banner->id}}"></button>
+            @endforeach
+        </div>
+    </div>
 
     <!-- Features Section -->
     <section class="py-16 bg-white">
@@ -91,7 +163,7 @@
 
             <!-- Left Content -->
             <div>
-                
+
                 <p class="text-gray-700 text-3xl leading-8 text-justify">
                     আপনি নিশ্চয় এমন মোরগ-মুরগি খুঁজছেন যা আপনার বাজার বাঁচায়, রোগমুক্ত এবং
                     সম্পূর্ণ দেশি পরিবেশে বেড়ে ওঠা। পাহাড়ি মোরগ-মুরগি এমনই এক জাত,
@@ -308,3 +380,116 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            let currentSlide = 0;
+            const slides = $('.slider-item');
+            const dots = $('.dot');
+            const totalSlides = slides.length;
+            let autoplayInterval;
+
+            // Show slide function
+            function showSlide(index) {
+                slides.removeClass('active').eq(index).addClass('active');
+                dots.removeClass('bg-white').addClass('bg-white bg-opacity-50')
+                    .eq(index).removeClass('bg-opacity-50').addClass('bg-white');
+                currentSlide = index;
+            }
+
+            // Next slide
+            function nextSlide() {
+                let next = (currentSlide + 1) % totalSlides;
+                showSlide(next);
+            }
+
+            // Previous slide
+            function prevSlide() {
+                let prev = (currentSlide - 1 + totalSlides) % totalSlides;
+                showSlide(prev);
+            }
+
+            // Autoplay
+            function startAutoplay() {
+                autoplayInterval = setInterval(nextSlide, 5000);
+            }
+
+            function stopAutoplay() {
+                clearInterval(autoplayInterval);
+            }
+
+            // Event listeners
+            $('#nextBtn').click(function() {
+                nextSlide();
+                stopAutoplay();
+                startAutoplay();
+            });
+
+            $('#prevBtn').click(function() {
+                prevSlide();
+                stopAutoplay();
+                startAutoplay();
+            });
+
+            $('.dot').click(function() {
+                let slideIndex = $(this).data('slide');
+                showSlide(slideIndex);
+                stopAutoplay();
+                startAutoplay();
+            });
+
+            // Pause on hover
+            $('#slider').hover(
+                function() {
+                    stopAutoplay();
+                },
+                function() {
+                    startAutoplay();
+                }
+            );
+
+            // Keyboard navigation
+            $(document).keydown(function(e) {
+                if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                    stopAutoplay();
+                    startAutoplay();
+                } else if (e.key === 'ArrowRight') {
+                    nextSlide();
+                    stopAutoplay();
+                    startAutoplay();
+                }
+            });
+
+            // Touch/Swipe support
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            $('#slider').on('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            $('#slider').on('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                if (touchEndX < touchStartX - 50) {
+                    nextSlide();
+                    stopAutoplay();
+                    startAutoplay();
+                }
+                if (touchEndX > touchStartX + 50) {
+                    prevSlide();
+                    stopAutoplay();
+                    startAutoplay();
+                }
+            }
+
+            // Start autoplay
+            startAutoplay();
+        });
+    </script>
+@endpush

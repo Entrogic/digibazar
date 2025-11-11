@@ -37,6 +37,7 @@
             overflow: hidden;
         }
     </style>
+    @stack('style')
 </head>
 
 <body class="bg-gray-50">
