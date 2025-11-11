@@ -151,6 +151,61 @@
                         </dl>
                     </div>
 
+                    <!-- Variants -->
+                    @if ($product->variants->count())
+                        <div class="border-t border-gray-200 pt-6">
+                            <h2 class="text-lg font-semibold leading-7 text-gray-900 mb-4">Product Variants</h2>
+
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200 text-sm">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-4 py-2 text-left font-medium text-gray-700">SKU</th>
+                                            @foreach ($attributes as $attribute)
+                                                <th class="px-4 py-2 text-left font-medium text-gray-700">
+                                                    {{ $attribute->name }}</th>
+                                            @endforeach
+                                            <th class="px-4 py-2 text-left font-medium text-gray-700">Price</th>
+                                            <th class="px-4 py-2 text-left font-medium text-gray-700">Stock</th>
+                                            <th class="px-4 py-2 text-left font-medium text-gray-700">Image</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        @foreach ($product->variants as $variant)
+                                            <tr>
+                                                <td class="px-4 py-2">{{ $variant->sku }}</td>
+
+                                                @foreach ($attributes as $attribute)
+                                                    @php
+                                                        $value = $variant->values->firstWhere(
+                                                            'attribute_id',
+                                                            $attribute->id,
+                                                        );
+                                                    @endphp
+                                                    <td class="px-4 py-2">
+                                                        {{ $value?->attributeValue?->value ?? '-' }}
+                                                    </td>
+                                                @endforeach
+
+                                                <td class="px-4 py-2">৳{{ number_format($variant->price, 2) }}</td>
+                                                <td class="px-4 py-2">{{ $variant->stock }}</td>
+                                                <td class="px-4 py-2">
+                                                    @if ($variant->image)
+                                                        <img src="{{ asset('storage/' . $variant->image) }}"
+                                                            alt="Variant Image" class="w-12 h-12 object-cover rounded">
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @endif
+
+
                     <!-- Inventory -->
                     <div class="border-t border-gray-200 pt-6">
                         <h2 class="text-lg font-semibold leading-7 text-gray-900 mb-4">Inventory</h2>

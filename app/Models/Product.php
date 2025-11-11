@@ -85,6 +85,11 @@ class Product extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function variants(): HasMany
+    {
+        return $this->hasMany(related: ProductVariant::class);
+    }
+
     /**
      * Scope for active products
      */
