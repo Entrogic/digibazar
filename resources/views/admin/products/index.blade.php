@@ -133,6 +133,10 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div class="flex items-center space-x-2">
+                                                <a href="{{ route('admin.product.variants.create', $product) }}"
+                                                    class="text-blue-600 hover:text-blue-900">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
                                                 <a href="{{ route('admin.products.show', $product) }}"
                                                     class="text-blue-600 hover:text-blue-900">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor"

@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Dashboard') - Raju Bazar</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -17,6 +19,7 @@
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body class="bg-gray-50">
@@ -51,7 +54,7 @@
                         </a>
 
                         <!-- Users Management -->
-                        <a href="{{route('admin.banners.index')}}"
+                        <a href="{{ route('admin.banners.index') }}"
                             class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white transition duration-200">
                             <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-white" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">

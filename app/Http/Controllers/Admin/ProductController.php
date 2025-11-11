@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attribute;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -90,7 +91,9 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product->load('category');
-        return view('admin.products.show', compact('product'));
+        $attributes = Attribute::all();
+        
+        return view('admin.products.show', compact('product','attributes'));
     }
 
     /**
