@@ -229,17 +229,17 @@
                                             <div class="text-sm text-gray-500">{{ $order->customer_phone }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm font-medium text-gray-900">{{ $order->product->name }}
+                                            <div class="text-sm font-medium text-gray-900">{{ $order->order_item->product->name }}
                                             </div>
-                                            @if ($order->product->category)
+                                            {{-- @if ($order->product->category)
                                                 <div class="text-sm text-gray-500">{{ $order->product->category->name }}
                                                 </div>
-                                            @endif
+                                            @endif --}}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm font-medium text-gray-900">
-                                                {{ $order->formatted_total_price }}</div>
-                                            <div class="text-sm text-gray-500">{{ $order->formatted_unit_price }} each
+                                                {{ $order->order_item->total }}</div>
+                                            <div class="text-sm text-gray-500">{{ $order->order_item->price }} each
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">

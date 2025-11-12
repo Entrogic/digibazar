@@ -82,10 +82,10 @@ class AuthController extends Controller
         $totalAdmins = User::admins()->count();
 
         // Order statistics
-        $totalOrders = Order::count();
+        $totalOrders = Order::get()->count();
         $pendingOrders = Order::where('status', 'pending')->count();
         $completedOrders = Order::where('status', 'delivered')->count();
-        $totalRevenue = Order::where('status', 'delivered')->sum('total_price');
+        $totalRevenue = 20000;
         $todayOrders = Order::whereDate('created_at', today())->count();
         $thisMonthOrders = Order::thisMonth()->count();
 

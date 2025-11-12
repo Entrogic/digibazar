@@ -38,23 +38,23 @@
                             <h4 class="text-lg font-semibold text-gray-800 mb-4">পণ্যের তথ্য</h4>
                             <div class="flex items-start space-x-4">
                                 <div class="flex-shrink-0">
-                                    <img src="{{ $order->product->main_image }}" alt="{{ $order->product->name }}"
+                                    <img src="{{ $order->order_item->product->main_image }}" alt="{{ $order->order_item->product_name }}"
                                         class="w-20 h-20 object-cover rounded-lg border">
                                 </div>
                                 <div class="flex-1">
-                                    <h5 class="text-lg font-medium text-gray-900 mb-1">{{ $order->product->name }}</h5>
-                                    @if ($order->product->category)
+                                    <h5 class="text-lg font-medium text-gray-900 mb-1">{{ $order->order_item->product_name }}</h5>
+                                    {{-- @if ($order->product->category)
                                         <p class="text-sm text-gray-600 mb-2">বিভাগ: {{ $order->product->category->name }}
                                         </p>
-                                    @endif
+                                    @endif --}}
                                     <div class="grid grid-cols-2 gap-4 text-sm">
                                         <div>
                                             <span class="text-gray-600">একক দাম:</span>
-                                            <span class="font-medium ml-2">{{ $order->formatted_unit_price }}</span>
+                                            <span class="font-medium ml-2">{{ $order->order_item->price }}</span>
                                         </div>
                                         <div>
                                             <span class="text-gray-600">পরিমাণ:</span>
-                                            <span class="font-medium ml-2">{{ $order->quantity }} টি</span>
+                                            <span class="font-medium ml-2">{{  $order->order_item->quantity }} টি</span>
                                         </div>
                                     </div>
                                 </div>
@@ -66,8 +66,8 @@
                             <h4 class="text-lg font-semibold text-gray-800 mb-4">অর্ডার সারাংশ</h4>
                             <div class="space-y-2">
                                 <div class="flex justify-between">
-                                    <span class="text-gray-600">পণ্যের দাম ({{ $order->quantity }} টি):</span>
-                                    <span class="font-medium">{{ $order->formatted_total_price }}</span>
+                                    <span class="text-gray-600">পণ্যের দাম ({{ $order->order_item->quantity }} টি):</span>
+                                    <span class="font-medium">{{ $order->order_item->total }}</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-gray-600">ডেলিভারি চার্জ:</span>
@@ -76,7 +76,7 @@
                                 <div class="border-t pt-2">
                                     <div class="flex justify-between text-lg font-bold">
                                         <span>মোট পরিশোধযোগ্য:</span>
-                                        <span class="text-green-600">{{ $order->formatted_total_price }}</span>
+                                        <span class="text-green-600">{{ $order->order_item->total }}</span>
                                     </div>
                                 </div>
                             </div>

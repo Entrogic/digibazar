@@ -9,10 +9,6 @@ class Order extends Model
 {
     protected $fillable = [
         'order_number',
-        'product_id',
-        'quantity',
-        'unit_price',
-        'total_price',
         'customer_name',
         'customer_email',
         'customer_phone',
@@ -44,9 +40,8 @@ class Order extends Model
     /**
      * Relationship with Product
      */
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
+    public function order_item(){
+        return $this->hasOne(OrderItem::class,'order_id');
     }
 
     /**

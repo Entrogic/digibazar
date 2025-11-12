@@ -98,31 +98,31 @@
                         <div class="px-4 py-5 sm:p-6">
                             <div class="flex items-start space-x-4">
                                 <div class="flex-shrink-0">
-                                    <img class="h-20 w-20 rounded-lg object-cover" src="{{ $order->product->main_image }}"
-                                        alt="{{ $order->product->name }}">
+                                    <img class="h-20 w-20 rounded-lg object-cover" src="{{ $order->order_item->product->main_image }}"
+                                        alt="{{ $order->order_item->product->name }}">
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <h4 class="text-lg font-medium text-gray-900">{{ $order->product->name }}</h4>
-                                    @if ($order->product->category)
-                                        <p class="text-sm text-gray-500">Category: {{ $order->product->category->name }}
+                                    <h4 class="text-lg font-medium text-gray-900">{{ $order->order_item->product->name }}</h4>
+                                    @if ($order->order_item->product->category)
+                                        <p class="text-sm text-gray-500">Category: {{ $order->order_item->product->category->name }}
                                         </p>
                                     @endif
-                                    @if ($order->product->sku)
-                                        <p class="text-sm text-gray-500">SKU: {{ $order->product->sku }}</p>
+                                    @if ($order->order_item->product->sku)
+                                        <p class="text-sm text-gray-500">SKU: {{ $order->order_item->product->sku }}</p>
                                     @endif
 
                                     <div class="mt-3 grid grid-cols-3 gap-4 text-sm">
                                         <div>
                                             <span class="text-gray-500">Unit Price:</span>
-                                            <span class="font-medium">{{ $order->formatted_unit_price }}</span>
+                                            <span class="font-medium">{{ $order->order_item->price }}</span>
                                         </div>
                                         <div>
                                             <span class="text-gray-500">Quantity:</span>
-                                            <span class="font-medium">{{ $order->quantity }}</span>
+                                            <span class="font-medium">{{ $order->order_item->quantity }}</span>
                                         </div>
                                         <div>
                                             <span class="text-gray-500">Total:</span>
-                                            <span class="font-medium text-lg">{{ $order->formatted_total_price }}</span>
+                                            <span class="font-medium text-lg">{{ $order->order_item->total }}</span>
                                         </div>
                                     </div>
                                 </div>

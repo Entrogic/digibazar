@@ -44,7 +44,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('products/{product}/variants/create', [ProductVariantController::class, 'create'])->name('product.variants.create');
     Route::post('products/{product}/variants', [ProductVariantController::class, 'store'])->name('product.variants.store');
 
-    Route::get('/product-variant',[ProductVariantController::class, 'getProductVariants'])->name('product.get-variants');
 
     // Order Management
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'destroy']);
@@ -57,6 +56,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
     Route::post('settings/reset', [SettingController::class, 'reset'])->name('settings.reset');
 });
+
+
+Route::get('/product-variant', [ProductVariantController::class, 'getProductVariants'])->name('product.get-variants');
+
 
 // Fallback routes for compatibility
 Route::get('/password/reset', function () {

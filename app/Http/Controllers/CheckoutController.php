@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Attribute as ModelsAttribute;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use Attribute;
 use Illuminate\Http\Request;
 
@@ -25,13 +27,16 @@ class CheckoutController extends Controller
         }
         $attributes = ModelsAttribute::all();
 
-        return view('checkout.product', compact('product','attributes'));
+        return view('checkout.product', compact('product', 'attributes'));
     }
 
     public function process(Request $request)
     {
+
+        //dd($request->all());
         $request->validate([
             'product_id' => 'required|exists:products,id',
+            'variant_id' => 'required',
             'quantity' => 'required|integer|min:1',
             'customer_name' => 'required|string|max:255',
             'customer_email' => 'nullable|email|max:255',
@@ -42,21 +47,15 @@ class CheckoutController extends Controller
 
         $product = Product::findOrFail($request->product_id);
 
-        // Check stock availability
-        if ($product->stock_quantity < $request->quantity) {
-            return back()->with('error', 'পর্যাপ্ত স্টক নেই। বর্তমানে স্টকে আছে: ' . $product->stock_quantity . ' টি।');
-        }
+        $variant = ProductVariant::where('product_id', $request->product_id)->where('id', $request->variant_id)->first();
+        
+       
 
-        // Calculate total
-        $unitPrice = $product->price;
-        $totalPrice = $unitPrice * $request->quantity;
+        
 
         // Create the order
         $order = Order::create([
-            'product_id' => $product->id,
-            'quantity' => $request->quantity,
-            'unit_price' => $unitPrice,
-            'total_price' => $totalPrice,
+    
             'customer_name' => $request->customer_name,
             'customer_email' => $request->customer_email,
             'customer_phone' => $request->customer_phone,
@@ -66,9 +65,22 @@ class CheckoutController extends Controller
             'payment_status' => 'pending',
         ]);
 
+        OrderItem::create([
+            'order_id' => $order->id,
+            'product_id' => $product->id,
+            'quantity' => $request->quantity,
+            'product_name' => $product->name,
+            'price' => $variant->price,
+            'total' => $variant->price * $request->quantity,
+        ]);
+
         // Update product stock if tracking is enabled
         if ($product->track_stock) {
-            $product->decrement('stock_quantity', $request->quantity);
+            $prevStock = $variant->stock;
+            $newStock = $prevStock - $request->quantity;
+            $variant->update([
+                'stock' => $newStock,
+            ]);
         }
 
         return redirect()->route('checkout.success', $order->order_number);
@@ -76,8 +88,9 @@ class CheckoutController extends Controller
 
     public function success($orderNumber)
     {
-        $order = Order::where('order_number', $orderNumber)->with(['product', 'product.category'])->first();
+        $order = Order::with(['order_item','order_item.product'])->where('order_number', $orderNumber)->first();
 
+        //dd($order);
         if (!$order) {
             return redirect()->route('home')->with('error', 'অর্ডার খুঁজে পাওয়া যায়নি।');
         }

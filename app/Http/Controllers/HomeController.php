@@ -17,7 +17,7 @@ class HomeController extends Controller
             ->featured()
             ->inStock()
             ->ordered()
-            ->limit(8)
+            ->limit(12)
             ->get();
 
             //dd($featuredProducts);

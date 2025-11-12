@@ -160,6 +160,7 @@
                     <form action="{{ route('checkout.process') }}" method="POST" class="space-y-6">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="variant_id" id="variant_id" >
 
                         <!-- Quantity -->
                         <div>
@@ -290,6 +291,7 @@
                             মেনে নিচ্ছেন।
                         </p>
                     </form>
+                    
                 </div>
             </div>
         </div>
@@ -298,10 +300,26 @@
 
 @push('scripts')
     <script>
+        function updateSummary() {
+
+            let qty = $('#quantity').val();
+            let price = $("#p-price").data('val');
+
+            if (price > 0) {
+                $('#unit-price').text(price);
+                $('#quantity-display').text(qty);
+                $('#total-price').text(parseFloat(parseInt(qty) * parseInt(price)).toFixed(2));
+
+
+
+                $('#order-summary').removeClass('hidden');
+            }
+        }
         $('#qty-plus').click(function() {
             let qty = $('#quantity');
             let newVal = parseInt(qty.val()) + 1;
             qty.val(newVal);
+            updateSummary();
         });
         $('#qty-minus').click(function() {
             let qty = $('#quantity');
@@ -310,9 +328,11 @@
                 let newVal = parseInt(qty.val()) - 1;
                 qty.val(newVal);
             }
-
+            updateSummary();
         });
 
+
+        
 
         $('#variant-select').change(function(e) {
             e.preventDefault();
@@ -321,7 +341,7 @@
             let productId = "{{ $product->id }}"
 
             $.ajax({
-                url: "{{ route('admin.product.get-variants') }}",
+                url: "{{ route('product.get-variants') }}",
                 type: 'GET',
                 data: {
                     variantId,
@@ -342,6 +362,7 @@
                                     </div>`;
 
                         $('#p-dynamic-info').html(html);
+                        $('#variant_id').val(data.id);
                         updateSummary();
 
                     }
@@ -350,30 +371,6 @@
                     console.error('Error:', error);
                 }
             });
-
-
-
-            function updateSummary() {
-
-
-                let qty = $('#quantity').val();
-                let price = $("#p-price").data('val');
-
-                if(price > 0){
-                    $('#unit-price').text(price);
-                    $('#quantity-display').text(qty);
-                    $('#total-price').text(parseFloat(parseInt(qty) * parseInt(price)).toFixed(2));
-
-
-
-                    $('#order-summary').removeClass('hidden');
-                }
-
-
-
-
-            }
-
         });
     </script>
 @endpush
