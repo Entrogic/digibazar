@@ -105,7 +105,7 @@
                         <!-- Product Image -->
                         <div class="relative">
                             <img src="{{ $product->main_image }}" alt="{{ $product->name }}"
-                                class="w-full h-48 object-cover">
+                                class="w-full h-68 object-cover">
 
                             @if ($product->is_featured)
                                 <span
