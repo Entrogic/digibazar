@@ -1,17 +1,23 @@
 <?php
 
+use App\Http\Controllers\Admin\LandingComponentController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\LandingSectionController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LandingController;
+use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/land', [LandingController::class, 'index'])->name('landing');
+
 
 // Checkout Routes
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
@@ -55,6 +61,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
     Route::post('settings/reset', [SettingController::class, 'reset'])->name('settings.reset');
+
+
+  
 });
 
 
@@ -69,3 +78,9 @@ Route::get('/password/reset', function () {
 Route::get('/register', function () {
     return redirect()->route('login')->with('info', 'নিবন্ধন ফিচার শীঘ্রই আসছে।');
 })->name('register');
+
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('sections', SectionController::class);
+    Route::post('sections/reorder', [SectionController::class, 'reorder'])->name('sections.reorder');
+});

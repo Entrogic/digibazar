@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Section;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -20,9 +21,10 @@ class HomeController extends Controller
             ->limit(12)
             ->get();
 
-            //dd($featuredProducts);
-        $banners = Banner::orderBy('id','desc')->get();    
+        //dd($featuredProducts);
+        $banners = Banner::orderBy('id', 'desc')->get();
+        $sections = Section::ordered()->get();
 
-        return view('home', compact('categories', 'featuredProducts','banners'));
+        return view('home', compact('categories','sections', 'featuredProducts', 'banners'));
     }
 }
