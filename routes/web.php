@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\LandingComponentController;
 use App\Http\Controllers\Admin\ProductVariantController;
+use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\AttributeValueController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\LandingSectionController;
@@ -63,7 +65,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('settings/reset', [SettingController::class, 'reset'])->name('settings.reset');
 
 
-  
+    Route::resource('attributes', AttributeController::class);
+
+    Route::prefix('attributes/{attribute}')->group(function () {
+        Route::resource('values', AttributeValueController::class);
+    });
 });
 
 
