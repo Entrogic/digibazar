@@ -9,7 +9,7 @@
                         class="w-5 h-5 bg-green-500 rounded flex items-center justify-center text-white text-sm">✓</span>
                 </div>
                 <p class="text-gray-400 leading-relaxed mb-4">
-                    {{ \App\Models\Setting::get('footer_about', 'আমরা বিশ্বাস করি, সময়মত মানসম্পন্ন পণ্য সরবরাহ করার মাধ্যমে গ্রাহকদের সেবা প্রদান করা। আমাদের লক্ষ্য হলো প্রতিটি গ্রাহকের চাহিদা পূরণ করা।') }}
+                    {{ \App\Models\Setting::get('footer_description', 'আমরা বিশ্বাস করি, সময়মত মানসম্পন্ন পণ্য সরবরাহ করার মাধ্যমে গ্রাহকদের সেবা প্রদান করা। আমাদের লক্ষ্য হলো প্রতিটি গ্রাহকের চাহিদা পূরণ করা।') }}
                 </p>
                 <div class="flex space-x-4">
                     @if (\App\Models\Setting::get('facebook_url'))
@@ -48,25 +48,26 @@
             </div>
 
             <!-- Contact Info Column -->
+          
             <div>
                 <h3 class="text-lg font-semibold mb-6">যোগাযোগ করুন</h3>
                 <div class="space-y-3 text-gray-400">
-                    @if (\App\Models\Setting::get('address'))
+                    @if (\App\Models\Setting::get('contact_address'))
                         <div class="flex items-center space-x-3">
                             <i class="fas fa-map-marker-alt text-green-500"></i>
-                            <span>{{ \App\Models\Setting::get('address') }}</span>
+                            <span>{{ \App\Models\Setting::get('contact_address') }}</span>
                         </div>
                     @endif
-                    @if (\App\Models\Setting::get('phone'))
+                    @if (\App\Models\Setting::get('contact_phone'))
                         <div class="flex items-center space-x-3">
                             <i class="fas fa-phone text-green-500"></i>
-                            <span>{{ \App\Models\Setting::get('phone') }}</span>
+                            <span>{{ \App\Models\Setting::get('contact_phone') }}</span>
                         </div>
                     @endif
-                    @if (\App\Models\Setting::get('email'))
+                    @if (\App\Models\Setting::get('contact_email'))
                         <div class="flex items-center space-x-3">
                             <i class="fas fa-envelope text-green-500"></i>
-                            <span>{{ \App\Models\Setting::get('email') }}</span>
+                            <span>{{ \App\Models\Setting::get('contact_email') }}</span>
                         </div>
                     @endif
                 </div>
