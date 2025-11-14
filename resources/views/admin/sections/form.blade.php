@@ -100,5 +100,8 @@
 </div>
 
 <!-- Alpine for dynamic form -->
-<script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 @endsection
+
+@push('scripts')
+<script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+@endpush

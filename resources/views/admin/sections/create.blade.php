@@ -1,15 +1,9 @@
-{{-- resources/views/admin/sections/create.blade.php --}}
-{{-- resources/views/admin/sections/edit.blade.php (same structure, just change form action) --}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ isset($section) ? 'Edit' : 'Create' }} Section</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50">
-    <div class="max-w-4xl mx-auto px-4 py-8">
+@extends('layouts.admin')
+
+@section('title', 'Section Management')
+
+@section('content')
+    <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="mb-6">
             <a href="{{ route('admin.sections.index') }}" class="text-blue-600 hover:text-blue-800">
                 ← Back to Sections
@@ -100,7 +94,11 @@
         </div>
     </div>
 
-    <script>
+@endsection
+
+
+@push('scripts')
+  <script>
         const sectionData = @json($section->content ?? []);
 
         const templates = {
@@ -224,5 +222,4 @@
             updateContentFields();
         }
     </script>
-</body>
-</html>
+@endpush
