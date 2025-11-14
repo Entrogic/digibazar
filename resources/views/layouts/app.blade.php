@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ \App\Models\Setting::get('site_name', 'DiziBazar') }} -
-        {{ \App\Models\Setting::get('site_tagline', 'ডিজিবাজার') }}</title>
+    <title>{{ \App\Models\Setting::get('site_name', 'Pahar Theke') }} -
+        {{ \App\Models\Setting::get('site_tagline', 'Pahar Theke') }}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset(\App\Models\Setting::get('favicon', '/favicon.ico')) }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
