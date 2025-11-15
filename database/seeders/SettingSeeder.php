@@ -131,13 +131,22 @@ class SettingSeeder extends Seeder
                 'sort_order' => 1,
             ],
             [
+                'setting_key' => 'whatsapp_url',
+                'value' => '#',
+                'type' => 'url',
+                'group_name' => 'social',
+                'label' => 'Whatsapp URL',
+                'description' => 'Whatsapp  URL',
+                'sort_order' => 2,
+            ],
+            [
                 'setting_key' => 'instagram_url',
                 'value' => '#',
                 'type' => 'url',
                 'group_name' => 'social',
                 'label' => 'Instagram URL',
                 'description' => 'Instagram page URL',
-                'sort_order' => 2,
+                'sort_order' => 3,
             ],
             [
                 'setting_key' => 'youtube_url',
@@ -146,7 +155,7 @@ class SettingSeeder extends Seeder
                 'group_name' => 'social',
                 'label' => 'YouTube URL',
                 'description' => 'YouTube channel URL',
-                'sort_order' => 3,
+                'sort_order' => 4,
             ],
 
             // Business Settings

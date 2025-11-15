@@ -16,9 +16,7 @@ class AttributeSeeder extends Seeder
     {
         // Example Attributes
         $attributes = [
-            'Color' => ['Red', 'Blue', 'Green', 'Black', 'White'],
-            'Size' => ['S', 'M', 'L', 'XL', 'XXL'],
-            'Material' => ['Cotton', 'Polyester', 'Leather'],
+            'Size' => ['S', 'M', 'L', 'XL', 'XXL']
         ];
 
         foreach ($attributes as $name => $values) {
