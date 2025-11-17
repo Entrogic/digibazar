@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Unit;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,6 +17,7 @@ class ProductSeeder extends Seeder
     {
         // Get some categories to assign to products
         $categories = Category::limit(5)->get();
+        $units = Unit::limit(5)->get();
 
         $products = [
             [
@@ -37,6 +39,7 @@ class ProductSeeder extends Seeder
                 'meta_title' => 'Samsung Galaxy S24 - Premium Smartphone',
                 'meta_description' => 'Buy Samsung Galaxy S24 with best price in Bangladesh',
                 'category_id' => $categories->isNotEmpty() ? $categories->random()->id : null,
+                'unit_id' => $units->isNotEmpty() ? $units->random()->id : null,
             ],
             [
                 'name' => 'iPhone 15 Pro',
@@ -57,6 +60,8 @@ class ProductSeeder extends Seeder
                 'meta_title' => 'iPhone 15 Pro - Apple Smartphone',
                 'meta_description' => 'Latest iPhone 15 Pro available in Bangladesh',
                 'category_id' => $categories->isNotEmpty() ? $categories->random()->id : null,
+                'unit_id' => $units->isNotEmpty() ? $units->random()->id : null,
+
             ]
         ];
 

@@ -95,6 +95,8 @@
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
+                      
+
 
                         <!-- SKU -->
                         <div>
@@ -125,58 +127,6 @@
                     </div>
                 </div>
 
-                <!-- Pricing -->
-                <div class="border-b border-gray-900/10 pb-6">
-                    <h2 class="text-lg font-semibold leading-7 text-gray-900">Pricing</h2>
-                    <p class="mt-1 text-sm leading-6 text-gray-600">Set product pricing information</p>
-
-                    <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
-                        <!-- Price -->
-                        <div>
-                            <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
-                                Price (BDT) <span class="text-red-500">*</span>
-                            </label>
-                            <input type="number" name="price" id="price" value="{{ old('price') }}" min="0"
-                                step="0.01"
-                                class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 @error('price') ring-red-500 @enderror"
-                                placeholder="0.00" required>
-                            @error('price')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Compare Price -->
-                        <div>
-                            <label for="compare_price" class="block text-sm font-medium text-gray-700 mb-2">
-                                Compare Price (BDT)
-                            </label>
-                            <input type="number" name="compare_price" id="compare_price"
-                                value="{{ old('compare_price') }}" min="0" step="0.01"
-                                class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 @error('compare_price') ring-red-500 @enderror"
-                                placeholder="0.00">
-                            <p class="mt-1 text-xs text-gray-500">Original price for discount calculation</p>
-                            @error('compare_price')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Cost Price -->
-                        <div>
-                            <label for="cost_price" class="block text-sm font-medium text-gray-700 mb-2">
-                                Cost Price (BDT)
-                            </label>
-                            <input type="number" name="cost_price" id="cost_price" value="{{ old('cost_price') }}"
-                                min="0" step="0.01"
-                                class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 @error('cost_price') ring-red-500 @enderror"
-                                placeholder="0.00">
-                            <p class="mt-1 text-xs text-gray-500">Your cost for this product</p>
-                            @error('cost_price')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Inventory -->
                 <div class="border-b border-gray-900/10 pb-6">
                     <h2 class="text-lg font-semibold leading-7 text-gray-900">Inventory</h2>
@@ -184,6 +134,18 @@
 
                     <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                         <!-- Stock Quantity -->
+                        <div>
+                            <label for="min_qty" class="block text-sm font-medium text-gray-700 mb-2">
+                                Minimum Quantity <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number" name="min_qty" id="min_qty" value="{{ old('min_qty', 0) }}"
+                                min="0"
+                                class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 @error('min_qty') ring-red-500 @enderror"
+                                required>
+                            @error('min_qty')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
                         <div>
                             <label for="stock_quantity" class="block text-sm font-medium text-gray-700 mb-2">
                                 Stock Quantity <span class="text-red-500">*</span>

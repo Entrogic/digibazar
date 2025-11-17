@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -47,9 +48,6 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'description_en' => 'nullable|string',
             'short_description' => 'nullable|string|max:500',
-            'price' => 'required|numeric|min:0',
-            'compare_price' => 'nullable|numeric|min:0',
-            'cost_price' => 'nullable|numeric|min:0',
             'sku' => 'nullable|string|max:100|unique:products,sku',
             'stock_quantity' => 'required|integer|min:0',
             'track_stock' => 'boolean',
@@ -64,6 +62,8 @@ class ProductController extends Controller
             'category_id' => 'nullable|exists:categories,id',
         ]);
 
+        //dd($validated);
+
         // Handle image uploads
         $images = [];
         if ($request->hasFile('images')) {
@@ -73,6 +73,7 @@ class ProductController extends Controller
             }
         }
         $validated['images'] = $images;
+        $validated['price'] = 0;
 
         // Generate slug if not provided
         if (empty($validated['slug'])) {
