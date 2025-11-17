@@ -100,7 +100,17 @@
 
 
     <!-- Main Content -->
+
+    @php
+        $url = \App\Models\Setting::get('whatsapp_url');
+    @endphp
+
     @yield('content')
+
+    <a href="{{$url}}" target="_blank"
+        class="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full bg-green-500 shadow-lg flex items-center justify-center animate-bounce">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="w-7 h-7" />
+    </a>
 
     <!-- Footer -->
     @include('layouts.partials.footer')

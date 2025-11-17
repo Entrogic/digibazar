@@ -5,7 +5,7 @@
             <div class="flex-shrink-0">
                 <a href="{{ route('home') }}" class="flex items-center">
                     <img src="{{ asset(\App\Models\Setting::get('logo', '/logo1.png')) }}"
-                        alt="{{ \App\Models\Setting::get('site_name', 'DiziBazar') }}" class="h-8 w-auto">
+                        alt="{{ \App\Models\Setting::get('site_name', 'DiziBazar') }}" class="h-12 w-auto">
                     {{-- <span class="ml-2 text-xl font-bold text-gray-900">{{ \App\Models\Setting::get('site_name', 'DiziBazar') }}</span> --}}
                 </a>
             </div>
@@ -15,15 +15,9 @@
                 <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
                     Home
                 </a>
-                <a href="" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
-                    Products
-                </a>
                 <a href="{{ route('track.form') }}"
                     class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
                     Track Order
-                </a>
-                <a href="" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
-                    Contact
                 </a>
             </nav>
 
