@@ -21,14 +21,18 @@ class CheckoutController extends Controller
 
     public function product(Product $product)
     {
-        //dd($product);
-        // Single product checkout
-        if (!$product->is_active || $product->stock_quantity <= 0) {
-            return redirect()->route('home')->with('error', 'এই পণ্যটি বর্তমানে পাওয়া যাচ্ছে না।');
-        }
-        $attributes = ModelsAttribute::all();
+        if ($product->variants()->count() > 0) {
+            // Single product checkout
+            if (!$product->is_active || $product->stock_quantity <= 0) {
+                return redirect()->route('home')->with('error', 'এই পণ্যটি বর্তমানে পাওয়া যাচ্ছে না।');
+            }
+            $attributes = ModelsAttribute::all();
 
-        return view('checkout.product', compact('product', 'attributes'));
+            return view('checkout.product', compact('product', 'attributes'));
+        }
+
+
+        return view('checkout.product-novariant', compact('product'));
     }
 
     public function process(Request $request)
@@ -37,7 +41,6 @@ class CheckoutController extends Controller
         //dd($request->all());
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'variant_id' => 'required',
             'quantity' => 'required|integer|min:1',
             'customer_name' => 'required|string|max:255',
             'customer_email' => 'nullable|email|max:255',
@@ -51,9 +54,6 @@ class CheckoutController extends Controller
         $variant = ProductVariant::where('product_id', $request->product_id)->where('id', $request->variant_id)->first();
 
 
-
-
-
         // Create the order
         $order = Order::create([
 
@@ -62,27 +62,38 @@ class CheckoutController extends Controller
             'customer_phone' => $request->customer_phone,
             'customer_address' => $request->customer_address,
             'payment_method' => $request->payment_method,
+            'delivery_charge' => $request->delivery_method,
+            'order_total' => $request->total,
             'status' => 'pending',
             'payment_status' => 'pending',
         ]);
 
-        OrderItem::create([
-            'order_id' => $order->id,
-            'product_id' => $product->id,
-            'quantity' => $request->quantity,
-            'product_name' => $product->name,
-            'price' => $variant->price,
-            'total' => $variant->price * $request->quantity,
-        ]);
-
-        // Update product stock if tracking is enabled
-        if ($product->track_stock) {
-            $prevStock = $variant->stock;
-            $newStock = $prevStock - $request->quantity;
-            $variant->update([
-                'stock' => $newStock,
+        if ($variant) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $product->id,
+                'product_variant_id' => $request->variant_id,
+                'quantity' => $request->quantity,
+                'product_name' => $product->name,
+                'price' => $variant->price,
+                'total' => $variant->price * $request->quantity,
+            ]);
+        } else {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $product->id,
+                'quantity' => $request->quantity,
+                'product_name' => $product->name,
+                'price' => $product->price,
+                'total' => $product->price * $request->quantity,
             ]);
         }
+
+
+
+
+        // Update product stock if tracking is enabled
+       
 
         //send sms 
         $sms = new SmsService();

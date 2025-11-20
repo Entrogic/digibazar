@@ -71,12 +71,12 @@
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-gray-600">ডেলিভারি চার্জ:</span>
-                                    <span class="font-medium text-green-600">বিনামূল্যে</span>
+                                    <span class="font-medium text-green-600">{{ $order->delivery_charge }}</span>
                                 </div>
                                 <div class="border-t pt-2">
                                     <div class="flex justify-between text-lg font-bold">
                                         <span>মোট পরিশোধযোগ্য:</span>
-                                        <span class="text-green-600">{{ $order->order_item->total }}</span>
+                                        <span class="text-green-600">{{ $order->order_total }}</span>
                                     </div>
                                 </div>
                             </div>

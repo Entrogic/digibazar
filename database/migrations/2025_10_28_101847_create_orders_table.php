@@ -14,14 +14,15 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('order_number')->unique();
-          
 
+            
+            
             // Customer Information
             $table->string('customer_name');
             $table->string('customer_email')->nullable();
             $table->string('customer_phone');
             $table->text('customer_address');
-
+            
             // Order Status
             $table->enum('status', [
                 'pending',
@@ -35,8 +36,10 @@ return new class extends Migration
             // Payment Information
             $table->enum('payment_method', ['cash_on_delivery', 'mobile_banking']);
             $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');
-
+            
             // Additional Information
+            $table->string('delivery_charge')->default(0);
+            $table->decimal('order_total', 10, 2); 
             $table->text('notes')->nullable();
             $table->timestamp('delivered_at')->nullable();
             $table->timestamps();

@@ -229,7 +229,12 @@
                                             <div class="text-sm text-gray-500">{{ $order->customer_phone }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm font-medium text-gray-900">{{ $order->order_item->product->name }}
+                                            @if ($order->order_item)
+                                                <div class="text-sm font-medium text-gray-900">{{ $order->order_item->product->name }}
+                                            @else
+                                                <div class="text-sm font-medium text-gray-900">{{ $order->product_name }}
+                                            @endif
+
                                             </div>
                                             {{-- @if ($order->product->category)
                                                 <div class="text-sm text-gray-500">{{ $order->product->category->name }}
@@ -238,7 +243,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm font-medium text-gray-900">
-                                                {{ $order->order_item->total }}</div>
+                                                {{ $order->order_total }}</div>
                                             <div class="text-sm text-gray-500">{{ $order->order_item->price }} each
                                             </div>
                                         </td>

@@ -48,6 +48,9 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'description_en' => 'nullable|string',
             'short_description' => 'nullable|string|max:500',
+            'price' => 'required|numeric|min:0',
+            'compare_price' => 'nullable|numeric|min:0',
+            'cost_price' => 'nullable|numeric|min:0',
             'sku' => 'nullable|string|max:100|unique:products,sku',
             'stock_quantity' => 'required|integer|min:0',
             'track_stock' => 'boolean',
@@ -73,7 +76,7 @@ class ProductController extends Controller
             }
         }
         $validated['images'] = $images;
-        $validated['price'] = 0;
+        // $validated['price'] = 0;
 
         // Generate slug if not provided
         if (empty($validated['slug'])) {
@@ -93,8 +96,8 @@ class ProductController extends Controller
     {
         $product->load('category');
         $attributes = Attribute::all();
-        
-        return view('admin.products.show', compact('product','attributes'));
+
+        return view('admin.products.show', compact('product', 'attributes'));
     }
 
     /**

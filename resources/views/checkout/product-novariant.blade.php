@@ -82,7 +82,16 @@
 
                             <!-- Price -->
                             <div id="p-dynamic-info">
-
+                                <div class="mb-4">
+                                    <div class="flex items-center space-x-3">
+                                        <p>Price:</p>
+                                        <span id="p-price" class="text-2xl font-bold text-green-600"
+                                            data-val="${data.price}">{{ $product->price }} BDT</span>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <p class="text-sm text-gray-600 mt-1">স্টকে আছে:{{ $product->stock_quantity }} টি</p>
+                                </div>
                             </div>
 
                             <!-- Category -->
@@ -160,7 +169,7 @@
                     <form action="{{ route('checkout.process') }}" method="POST" class="space-y-6">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <input type="hidden" name="variant_id" id="variant_id" >
+                        <input type="hidden" name="variant_id" id="variant_id">
 
                         <!-- Quantity -->
                         <div>
@@ -239,30 +248,47 @@
                                     </div>
                                 </label>
                             </div>
-                            
                         </div>
-                        
+
+
                         <div>
                             <h3 class="text-lg font-semibold text-gray-700 mb-3">ডেলিভারি পদ্ধতি</h3>
 
                             <div class="space-y-3">
+
+                                <!-- Dhakar Vitore -->
                                 <label
                                     class="flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                    <input type="radio" name="payment_method" value="cash_on_delivery" checked
-                                        class="text-blue-600">
+                                    <input type="radio" name="delivery_method" value="100" class="text-blue-600"
+                                        checked>
                                     <div class="flex items-center space-x-2">
-                                        <span class="text-2xl">💵</span>
+                                        <span class="text-2xl">🚚</span>
                                         <div>
-                                            <div class="font-medium">ক্যাশ অন ডেলিভারি</div>
-                                            <div class="text-sm text-gray-600">পণ্য গ্রহণের সময় পেমেন্ট করুন</div>
+                                            <div class="font-medium">ঢাকার ভিতরে</div>
+                                            <div class="text-sm text-gray-600">ডেলিভারি চার্জ: 100 টাকা</div>
                                         </div>
                                     </div>
                                 </label>
+
+                                <!-- Dhakar Baire -->
+                                <label
+                                    class="flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="delivery_method" value="500" class="text-blue-600">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-2xl">📦</span>
+                                        <div>
+                                            <div class="font-medium">ঢাকার বাইরে</div>
+                                            <div class="text-sm text-gray-600">ডেলিভারি চার্জ: 500 টাকা</div>
+                                        </div>
+                                    </div>
+                                </label>
+
                             </div>
                         </div>
 
+
                         <!-- Order Summary -->
-                        <div class="bg-gray-50 rounded-lg p-4 hidden" id="order-summary">
+                        <div class="bg-gray-50 rounded-lg p-4" id="order-summary">
                             <h4 class="font-semibold text-gray-700 mb-3">অর্ডার সারাংশ</h4>
                             <div class="space-y-2">
                                 <div class="flex justify-between">
@@ -275,13 +301,13 @@
                                 </div>
                                 <div class="flex justify-between">
                                     <span>ডেলিভারি চার্জ:</span>
-                                    <span class="text-green-600">বিনামূল্যে</span>
+                                    <span id="d-charge" class="text-green-600">100</span>
                                 </div>
                                 <hr class="my-2">
                                 <div class="flex justify-between text-lg font-bold">
                                     <span>মোট:</span>
-                                    <span id="total-price" class="text-green-600">{{ $product->formatted_price }}</span>
-                                     <input type="hidden" name="total" value="{{ $product->formatted_price }}" id="total">
+                                    <span id="total-price" class="text-green-600"></span>
+                                    <input type="hidden" name="total" value="" id="total">
                                 </div>
                             </div>
                         </div>
@@ -299,7 +325,7 @@
                             মেনে নিচ্ছেন।
                         </p>
                     </form>
-                    
+
                 </div>
             </div>
         </div>
@@ -308,30 +334,53 @@
 
 @push('scripts')
     <script>
+        $("input[name='delivery_method']").change(function() {
+            var value = $("input[name='delivery_method']:checked").val();
+            // console.log("Selected:", value);
+            $('#d-charge').text(value);
+
+            updateSummary();
+        });
+
+
         function updateSummary() {
 
-            let qty = $('#quantity').val();
-            let price = $("#p-price").data('val');
+            let qty = parseInt($('#quantity').val());
+            let price = parseFloat("{{ $product->price }}");
 
             if (price > 0) {
+
+                // Subtotal
+                let subtotal = qty * price;
+
                 $('#unit-price').text(price);
                 $('#quantity-display').text(qty);
-                $('#total-price').text(parseFloat(parseInt(qty) * parseInt(price)).toFixed(2));
-                $('#total').val(parseFloat(parseInt(qty) * parseInt(price)).toFixed(2));
+                $('#total-price').text(subtotal.toFixed(2));
 
+                // Delivery Charge (convert to number)
+                let deliveryCharge = parseFloat($('#d-charge').text()) || 0;
 
+                console.log("Delivery:", deliveryCharge);
 
-                $('#order-summary').removeClass('hidden');
+                // Total = subtotal + delivery
+                let total = subtotal + deliveryCharge;
+
+                $('#total').val(total.toFixed(2));
+                $('#total-price').text(total.toFixed(2));
             }
         }
 
-        
+
+        updateSummary();
+
+
         $('#qty-plus').click(function() {
             let qty = $('#quantity');
             let newVal = parseInt(qty.val()) + 1;
             qty.val(newVal);
             updateSummary();
         });
+
         $('#qty-minus').click(function() {
             let qty = $('#quantity');
 
@@ -340,48 +389,6 @@
                 qty.val(newVal);
             }
             updateSummary();
-        });
-
-
-        
-
-        $('#variant-select').change(function(e) {
-            e.preventDefault();
-
-            let variantId = $(this).val();
-            let productId = "{{ $product->id }}"
-
-            $.ajax({
-                url: "{{ route('product.get-variants') }}",
-                type: 'GET',
-                data: {
-                    variantId,
-                    productId
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status === 1) {
-                        const data = response.data;
-                        let html = `<div class="mb-4">
-                                        <div class="flex items-center space-x-3">
-                                            <p>Price:</p>
-                                            <span id="p-price" class="text-2xl font-bold text-green-600" data-val="${data.price}">${data.price} BDT</span>
-                                        </div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-sm text-gray-600 mt-1">স্টকে আছে: ${data.stock} টি</p>
-                                    </div>`;
-
-                        $('#p-dynamic-info').html(html);
-                        $('#variant_id').val(data.id);
-                        updateSummary();
-
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
-            });
         });
     </script>
 @endpush
