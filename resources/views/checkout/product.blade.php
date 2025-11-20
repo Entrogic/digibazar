@@ -160,7 +160,7 @@
                     <form action="{{ route('checkout.process') }}" method="POST" class="space-y-6">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <input type="hidden" name="variant_id" id="variant_id" >
+                        <input type="hidden" name="variant_id" id="variant_id">
 
                         <!-- Quantity -->
                         <div>
@@ -239,25 +239,41 @@
                                     </div>
                                 </label>
                             </div>
-                            
+
                         </div>
-                        
-                        <div>
+
+                         <div>
                             <h3 class="text-lg font-semibold text-gray-700 mb-3">ডেলিভারি পদ্ধতি</h3>
 
                             <div class="space-y-3">
+
+                                <!-- Dhakar Vitore -->
                                 <label
                                     class="flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
-                                    <input type="radio" name="payment_method" value="cash_on_delivery" checked
-                                        class="text-blue-600">
+                                    <input type="radio" name="delivery_method" value="100" class="text-blue-600"
+                                        checked>
                                     <div class="flex items-center space-x-2">
-                                        <span class="text-2xl">💵</span>
+                                        <span class="text-2xl">🚚</span>
                                         <div>
-                                            <div class="font-medium">ক্যাশ অন ডেলিভারি</div>
-                                            <div class="text-sm text-gray-600">পণ্য গ্রহণের সময় পেমেন্ট করুন</div>
+                                            <div class="font-medium">ঢাকার ভিতরে</div>
+                                            <div class="text-sm text-gray-600">ডেলিভারি চার্জ: 100 টাকা</div>
                                         </div>
                                     </div>
                                 </label>
+
+                                <!-- Dhakar Baire -->
+                                <label
+                                    class="flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="delivery_method" value="500" class="text-blue-600">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-2xl">📦</span>
+                                        <div>
+                                            <div class="font-medium">ঢাকার বাইরে</div>
+                                            <div class="text-sm text-gray-600">ডেলিভারি চার্জ: 500 টাকা</div>
+                                        </div>
+                                    </div>
+                                </label>
+
                             </div>
                         </div>
 
@@ -267,7 +283,7 @@
                             <div class="space-y-2">
                                 <div class="flex justify-between">
                                     <span>পণ্যের দাম:</span>
-                                    <span id="unit-price">{{ $product->formatted_price }}</span>
+                                    <span id="unit-price"></span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span>পরিমাণ:</span>
@@ -275,13 +291,13 @@
                                 </div>
                                 <div class="flex justify-between">
                                     <span>ডেলিভারি চার্জ:</span>
-                                    <span class="text-green-600">বিনামূল্যে</span>
+                                    <span  id="d-charge" class="text-green-600">100</span>
                                 </div>
                                 <hr class="my-2">
                                 <div class="flex justify-between text-lg font-bold">
                                     <span>মোট:</span>
-                                    <span id="total-price" class="text-green-600">{{ $product->formatted_price }}</span>
-                                     <input type="hidden" name="total" value="{{ $product->formatted_price }}" id="total">
+                                    <span id="total-price" class="text-green-600"></span>
+                                    <input type="hidden" name="total" id="total">
                                 </div>
                             </div>
                         </div>
@@ -299,7 +315,7 @@
                             মেনে নিচ্ছেন।
                         </p>
                     </form>
-                    
+
                 </div>
             </div>
         </div>
@@ -308,24 +324,45 @@
 
 @push('scripts')
     <script>
+        $("input[name='delivery_method']").change(function() {
+            var value = $("input[name='delivery_method']:checked").val();
+            // console.log("Selected:", value);
+            $('#d-charge').text(value);
+
+            updateSummary();
+        });
+
         function updateSummary() {
 
-            let qty = $('#quantity').val();
-            let price = $("#p-price").data('val');
+            let qty = parseInt($('#quantity').val());
+            // let price = parseFloat("{{ $product->price }}");
+            let price = $('#p-price').data('val');
 
             if (price > 0) {
+
+                // Subtotal
+                let subtotal = qty * price;
+
                 $('#unit-price').text(price);
                 $('#quantity-display').text(qty);
-                $('#total-price').text(parseFloat(parseInt(qty) * parseInt(price)).toFixed(2));
-                $('#total').val(parseFloat(parseInt(qty) * parseInt(price)).toFixed(2));
+                $('#total-price').text(subtotal.toFixed(2));
 
+                // Delivery Charge (convert to number)
+                let deliveryCharge = parseFloat($('#d-charge').text()) || 0;
 
+                console.log("Delivery:", deliveryCharge);
 
-                $('#order-summary').removeClass('hidden');
+                // Total = subtotal + delivery
+                let total = subtotal + deliveryCharge;
+
+                $('#total').val(total.toFixed(2));
+                $('#total-price').text(total.toFixed(2));
             }
+
+            $('#order-summary').removeClass('hidden');
         }
 
-        
+
         $('#qty-plus').click(function() {
             let qty = $('#quantity');
             let newVal = parseInt(qty.val()) + 1;
@@ -343,7 +380,7 @@
         });
 
 
-        
+
 
         $('#variant-select').change(function(e) {
             e.preventDefault();
