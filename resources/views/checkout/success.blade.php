@@ -54,7 +54,7 @@
                                         </div>
                                         <div>
                                             <span class="text-gray-600">পরিমাণ:</span>
-                                            <span class="font-medium ml-2">{{  $order->order_item->quantity }} টি</span>
+                                            <span class="font-medium ml-2">{{  $order->order_item->quantity }} {{ $order->order_item->product->unit->name ?? 'টি' }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                             <h4 class="text-lg font-semibold text-gray-800 mb-4">অর্ডার সারাংশ</h4>
                             <div class="space-y-2">
                                 <div class="flex justify-between">
-                                    <span class="text-gray-600">পণ্যের দাম ({{ $order->order_item->quantity }} টি):</span>
+                                    <span class="text-gray-600">পণ্যের দাম ({{ $order->order_item->quantity }} {{ $order->order_item->product->unit->name ?? 'টি' }}):</span>
                                     <span class="font-medium">{{ $order->order_item->total }}</span>
                                 </div>
                                 <div class="flex justify-between">
@@ -233,9 +233,22 @@
                 display: none !important;
             }
 
+
             .bg-gray-50 {
                 background-color: white !important;
             }
         }
     </style>
+
+    {{-- Facebook Pixel Purchase Event --}}
+    @include('partials.fb-pixel-event', [
+        'event' => 'Purchase',
+        'data' => [
+            'value' => $order->order_total,
+            'currency' => 'BDT',
+            'content_type' => 'product',
+            'content_ids' => [$order->order_item->product_id],
+            'num_items' => $order->order_item->quantity
+        ]
+    ])
 @endsection

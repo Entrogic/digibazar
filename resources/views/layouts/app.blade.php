@@ -38,6 +38,9 @@
         }
     </style>
     @stack('style')
+    
+    {{-- Tracking Scripts (Facebook Pixel, Google Analytics, etc.) --}}
+    @include('partials.tracking-scripts')
 </head>
 
 <body class="bg-gray-50">

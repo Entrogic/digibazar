@@ -77,7 +77,7 @@
         <!-- Copyright Section -->
         <div class="border-t border-gray-800 mt-8 pt-8 text-center">
             <p class="text-gray-400">
-                © {{ date('Y') }} {{ \App\Models\Setting::get('site_name', 'DiziBazar') }}. সকল অধিকার সংরক্ষিত।
+                © {{ date('Y') }} {{ \App\Models\Setting::get('site_name', 'Pahar Theke') }}. সকল অধিকার সংরক্ষিত।
             </p>
         </div>
     </div>

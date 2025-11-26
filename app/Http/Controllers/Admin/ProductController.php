@@ -32,8 +32,9 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::parentCategories()->active()->ordered()->get();
+        $units = Unit::active()->get();
 
-        return view('admin.products.create', compact('categories'));
+        return view('admin.products.create', compact('categories', 'units'));
     }
 
     /**
@@ -63,6 +64,7 @@ class ProductController extends Controller
             'dimensions' => 'nullable|string|max:100',
             'sort_order' => 'required|integer|min:0',
             'category_id' => 'nullable|exists:categories,id',
+            'unit_id' => 'nullable|exists:units,id',
         ]);
 
         //dd($validated);
@@ -106,7 +108,8 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::parentCategories()->active()->ordered()->get();
-        return view('admin.products.edit', compact('product', 'categories'));
+        $units = Unit::active()->get();
+        return view('admin.products.edit', compact('product', 'categories', 'units'));
     }
 
     /**
@@ -136,6 +139,7 @@ class ProductController extends Controller
             'dimensions' => 'nullable|string|max:100',
             'sort_order' => 'required|integer|min:0',
             'category_id' => 'nullable|exists:categories,id',
+            'unit_id' => 'nullable|exists:units,id',
         ]);
 
         // Handle image uploads

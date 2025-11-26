@@ -51,6 +51,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('products/{product}/toggle-featured', [ProductController::class, 'toggleFeatured'])->name('products.toggle-featured');
     Route::get('products/{product}/variants/create', [ProductVariantController::class, 'create'])->name('product.variants.create');
     Route::post('products/{product}/variants', [ProductVariantController::class, 'store'])->name('product.variants.store');
+    Route::get('products/{product}/variants/{variant}/edit', [ProductVariantController::class, 'edit'])->name('product.variants.edit');
+    Route::put('products/{product}/variants/{variant}', [ProductVariantController::class, 'update'])->name('product.variants.update');
+    Route::delete('products/{product}/variants/{variant}', [ProductVariantController::class, 'destroy'])->name('product.variants.destroy');
+
+    // Unit Management
+    Route::resource('units', \App\Http\Controllers\Admin\UnitController::class);
+    Route::post('units/{unit}/toggle-status', [\App\Http\Controllers\Admin\UnitController::class, 'toggleStatus'])->name('units.toggle-status');
+
 
 
     // Order Management

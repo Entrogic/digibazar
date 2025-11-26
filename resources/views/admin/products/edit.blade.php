@@ -98,6 +98,26 @@
                             @enderror
                         </div>
 
+                        <!-- Unit -->
+                        <div>
+                            <label for="unit_id" class="block text-sm font-medium text-gray-700 mb-2">
+                                Unit
+                            </label>
+                            <select name="unit_id" id="unit_id"
+                                class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 @error('unit_id') ring-red-500 @enderror">
+                                <option value="">Select Unit</option>
+                                @foreach ($units as $unit)
+                                    <option value="{{ $unit->id }}"
+                                        {{ old('unit_id', $product->unit_id) == $unit->id ? 'selected' : '' }}>
+                                        {{ $unit->name }} ({{ $unit->symbol }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('unit_id')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- SKU -->
                         <div>
                             <label for="sku" class="block text-sm font-medium text-gray-700 mb-2">

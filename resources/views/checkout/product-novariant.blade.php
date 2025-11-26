@@ -90,7 +90,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-4">
-                                    <p class="text-sm text-gray-600 mt-1">স্টকে আছে:{{ $product->stock_quantity }} টি</p>
+                                    <p class="text-sm text-gray-600 mt-1">স্টকে আছে:{{ $product->stock_quantity }} {{ $product->unit->name ?? 'টি' }}</p>
                                 </div>
                             </div>
 

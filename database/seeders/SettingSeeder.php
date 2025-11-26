@@ -186,6 +186,44 @@ class SettingSeeder extends Seeder
                 'description' => 'Currency symbol to display',
                 'sort_order' => 3,
             ],
+
+            // Tracking Settings
+            [
+                'setting_key' => 'facebook_pixel_id',
+                'value' => '',
+                'type' => 'text',
+                'group_name' => 'tracking',
+                'label' => 'Facebook Pixel ID',
+                'description' => 'Enter your Facebook Pixel ID (e.g., 1234567890123456)',
+                'sort_order' => 1,
+            ],
+            [
+                'setting_key' => 'facebook_pixel_enabled',
+                'value' => '0',
+                'type' => 'boolean',
+                'group_name' => 'tracking',
+                'label' => 'Enable Facebook Pixel',
+                'description' => 'Enable or disable Facebook Pixel tracking',
+                'sort_order' => 2,
+            ],
+            [
+                'setting_key' => 'google_analytics_id',
+                'value' => '',
+                'type' => 'text',
+                'group_name' => 'tracking',
+                'label' => 'Google Analytics ID',
+                'description' => 'Enter your Google Analytics Measurement ID (e.g., G-XXXXXXXXXX)',
+                'sort_order' => 3,
+            ],
+            [
+                'setting_key' => 'google_analytics_enabled',
+                'value' => '0',
+                'type' => 'boolean',
+                'group_name' => 'tracking',
+                'label' => 'Enable Google Analytics',
+                'description' => 'Enable or disable Google Analytics tracking',
+                'sort_order' => 4,
+            ],
         ];
 
         foreach ($settings as $setting) {

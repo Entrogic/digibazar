@@ -31,6 +31,7 @@ class Product extends Model
         'dimensions',
         'sort_order',
         'category_id',
+        'unit_id',
     ];
 
     protected $casts = [
@@ -75,6 +76,14 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Get the unit that belongs to the product
+     */
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
     }
 
     /**

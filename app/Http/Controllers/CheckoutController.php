@@ -105,7 +105,7 @@ class CheckoutController extends Controller
 
     public function success($orderNumber)
     {
-        $order = Order::with(['order_item', 'order_item.product'])->where('order_number', $orderNumber)->first();
+        $order = Order::with(['order_item', 'order_item.product', 'order_item.product.unit'])->where('order_number', $orderNumber)->first();
 
         //dd($order);
         if (!$order) {

@@ -406,7 +406,7 @@
                                         </div>
                                     </div>
                                     <div class="mb-4">
-                                        <p class="text-sm text-gray-600 mt-1">স্টকে আছে: ${data.stock} টি</p>
+                                        <p class="text-sm text-gray-600 mt-1">স্টকে আছে: ${data.stock} ${response.unit_name}</p>
                                     </div>`;
 
                         $('#p-dynamic-info').html(html);
