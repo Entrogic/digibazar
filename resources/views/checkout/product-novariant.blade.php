@@ -102,11 +102,8 @@
                                     </span>
                                 </div>
                             @endif --}}
-
-
                         </div>
                     </div>
-
                     @if ($product->variants->count())
                         <div class="border-t border-gray-200 pt-6 mt-6">
                             <h2 class="text-lg font-semibold leading-7 text-gray-900 mb-4">Product Variants</h2>
@@ -141,7 +138,6 @@
 
                                                 <td class="px-4 py-2">৳{{ number_format($variant->price, 2) }}</td>
                                                 <td class="px-4 py-2">{{ $variant->stock }}</td>
-
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -149,13 +145,10 @@
                             </div>
                         </div>
                     @endif
-
                 </div>
-
                 <!-- Checkout Form -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h2 class="text-2xl font-bold text-gray-800 mb-6">অর্ডার তথ্য</h2>
-
                     @if ($errors->any())
                         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
                             <ul class="list-disc list-inside space-y-1">
@@ -165,7 +158,6 @@
                             </ul>
                         </div>
                     @endif
-
                     <form action="{{ route('checkout.process') }}" method="POST" class="space-y-6">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -230,6 +222,21 @@
                             </div>
                         </div>
 
+                         <div class="p-3">
+                            <label
+                                class="flex flex-col items-center text-center p-5 border border-gray-300 rounded-2xl hover:bg-gray-50 cursor-pointer space-y-2 transition">
+                                
+                                <span class="text-4xl">🛵</span>
+                                <div>
+                                    <div class="font-semibold text-lg">ঢাকার বাইরে</div>
+                                    <div class="text-sm text-gray-600 mt-1">
+                                        পচনশীল পণ্যে প্রথম অর্ডারে ১০-২৫% পেমেন্ট আগে করতে হয়।
+                                    </div>
+                                </div>
+
+                            </label>
+                        </div>
+
                         <!-- Payment Method -->
                         <div>
                             <h3 class="text-lg font-semibold text-gray-700 mb-3">পেমেন্ট পদ্ধতি</h3>
@@ -249,6 +256,9 @@
                                 </label>
                             </div>
                         </div>
+
+                     
+
 
 
                         <div>
