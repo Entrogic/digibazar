@@ -157,7 +157,7 @@
                                                 <form action="{{ route('admin.categories.destroy', $category) }}"
                                                     method="POST" class="inline"
                                                     onsubmit="return confirm('Are you sure you want to delete this category?')">
-                                                    >
+                                                    
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-red-600 hover:text-red-900">

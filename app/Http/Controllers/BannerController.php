@@ -28,32 +28,33 @@ class BannerController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'subtitle' => 'required|string|max:255',
-            'button_text' => 'required|string|max:255',
-            'button_link' => 'required|string|max:255',
-            'image' => 'required|file',
-        ]);
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'subtitle' => 'required|string|max:255',
+        'button_text' => 'required|string|max:255',
+        'button_link' => 'required|string|max:255',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+    ]);
 
-        if ($request->hasFile('image')) {
-           
-            $validated['image'] = $request->file('image')->store('banners', 'public');
-            
-        }
-
-        Banner::create([
-            'title' => $validated['title'],
-            'subtitle' => $validated['subtitle'],
-            'button_text' => $validated['subtitle'],
-            'button_link' => $validated['subtitle'],
-            'image' => 'storage/'.$validated['image'],
-        ]);
-
-
-        return redirect()->route('admin.banners.index')->with('success','Banner Create Successfully1');
+    if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $filename = time().'_'.$file->getClientOriginalName();
+        $file->move(public_path('uploads/banners'), $filename); // public/uploads/banners ফোল্ডারে আপলোড
+        $validated['image'] = 'uploads/banners/'.$filename; // সঠিক path save
     }
+
+    Banner::create([
+        'title' => $validated['title'],
+        'subtitle' => $validated['subtitle'],
+        'button_text' => $validated['button_text'],
+        'button_link' => $validated['button_link'],
+        'image' => $validated['image'],
+    ]);
+
+    return redirect()->route('admin.banners.index')->with('success','Banner Created Successfully');
+}
+
 
     /**
      * Display the specified resource.
