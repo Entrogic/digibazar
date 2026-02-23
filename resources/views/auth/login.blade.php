@@ -7,12 +7,11 @@
             <!-- Header -->
             <div class="text-center">
                 <div class="flex justify-center items-center space-x-2 mb-4">
-                    <span class="text-3xl font-bold text-gray-800">Raju</span>
-                    <span class="text-3xl font-bold text-gray-800">Bazar</span>
+                    <span class="text-3xl font-bold text-gray-800">Admin</span>
+                    <span class="text-3xl font-bold text-gray-800">Login</span>
                     <span class="w-6 h-6 bg-green-500 rounded flex items-center justify-center text-white text-sm">✓</span>
                 </div>
-                <h2 class="text-3xl font-bold text-gray-900 mb-2">লগইন করুন</h2>
-                <p class="text-sm text-gray-600">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
+                
             </div>
 
             <!-- Success/Error Messages -->
@@ -73,7 +72,7 @@
                     <!-- Email Field -->
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                            ইমেইল ঠিকানা
+                            Your Email Address
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -85,7 +84,7 @@
                             <input id="email" name="email" type="email" autocomplete="email" required
                                 value="{{ old('email') }}"
                                 class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 @error('email') border-red-500 @enderror"
-                                placeholder="আপনার ইমেইল লিখুন">
+                                placeholder="Enter your email address">
                         </div>
                         @error('email')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -95,7 +94,7 @@
                     <!-- Password Field -->
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-                            পাসওয়ার্ড
+                            Password
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -106,7 +105,7 @@
                             </div>
                             <input id="password" name="password" type="password" autocomplete="current-password" required
                                 class="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 @error('password') border-red-500 @enderror"
-                                placeholder="আপনার পাসওয়ার্ড লিখুন">
+                                placeholder="Enter your password">
                             <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                 <button type="button" class="text-gray-400 hover:text-gray-600 focus:outline-none"
                                     onclick="togglePassword()">
@@ -126,7 +125,7 @@
                     </div>
 
                     <!-- Remember Me & Forgot Password -->
-                    <div class="flex items-center justify-between">
+                    <!-- <div class="flex items-center justify-between">
                         <div class="flex items-center">
                             <input id="remember-me" name="remember" type="checkbox"
                                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
@@ -141,7 +140,7 @@
                                 পাসওয়ার্ড ভুলে গেছেন?
                             </a>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Submit Button -->
                     <div>
@@ -155,22 +154,22 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </span>
-                            লগইন করুন
+                            Login
                         </button>
                     </div>
 
                     <!-- Divider -->
-                    <div class="relative">
+                    <!-- <div class="relative">
                         <div class="absolute inset-0 flex items-center">
                             <div class="w-full border-t border-gray-300"></div>
                         </div>
                         <div class="relative flex justify-center text-sm">
                             <span class="px-2 bg-white text-gray-500">অথবা</span>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Social Login Buttons -->
-                    <div class="grid grid-cols-2 gap-3">
+                    <!-- <div class="grid grid-cols-2 gap-3">
                         <button type="button"
                             class="w-full inline-flex justify-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
                             <svg class="w-5 h-5" viewBox="0 0 24 24">
@@ -194,11 +193,11 @@
                             </svg>
                             <span class="ml-2">ফেসবুক</span>
                         </button>
-                    </div>
+                    </div> -->
                 </form>
 
                 <!-- Sign Up Link -->
-                <div class="mt-6 text-center">
+                <!-- <div class="mt-6 text-center">
                     <p class="text-sm text-gray-600">
                         নতুন ব্যবহারকারী?
                         <a href="{{ route('register') }}"
@@ -206,18 +205,18 @@
                             নিবন্ধন করুন
                         </a>
                     </p>
-                </div>
+                </div> -->
             </div>
 
             <!-- Additional Info -->
-            <div class="text-center">
+            <!-- <div class="text-center">
                 <p class="text-xs text-gray-500">
                     লগইন করার মাধ্যমে আপনি আমাদের
                     <a href="#" class="text-blue-600 hover:text-blue-500">শর্তাবলী</a> এবং
                     <a href="#" class="text-blue-600 hover:text-blue-500">গোপনীয়তা নীতি</a>
                     মেনে নিচ্ছেন।
                 </p>
-            </div>
+            </div> -->
         </div>
     </div>
 
