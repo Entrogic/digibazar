@@ -83,11 +83,15 @@ class OrderController extends Controller
         ]);
 
         // If order is cancelled, restore stock
-        if ($request->status === 'cancelled' && $oldStatus !== 'cancelled') {
-            if ($order->product->track_stock) {
-                $order->product->increment('stock_quantity', $order->quantity);
-            }
-        }
+if ($request->status === 'cancelled' && $oldStatus !== 'cancelled') {
+
+    $item = $order->order_item->first();
+    $product = $item?->product;
+
+    if ($product && $product->track_stock) {
+        $product->increment('stock_quantity', $item->quantity);
+    }
+}
 
         return back()->with('success', 'Order status updated successfully.');
     }
